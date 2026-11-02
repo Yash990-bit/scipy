@@ -903,9 +903,9 @@ def seuclidean(u, v, V):
 
 def cityblock(u, v, w=None):
     """
-    Compute the City Block (Manhattan) distance.
+    Compute the City Block (Manhattan) distance between two vectors.
 
-    Computes the Manhattan distance between two 1-D arrays `u` and `v`,
+    Computes the Manhattan distance between two vectors `u` and `v`,
     which is defined as
 
     .. math::
@@ -914,37 +914,36 @@ def cityblock(u, v, w=None):
 
     Parameters
     ----------
-    u : (N,) array_like
+    u : (...,N) array_like
         Input array.
-    v : (N,) array_like
+    v : (...,N) array_like
         Input array.
-    w : (N,) array_like, optional
+    w : (...,N) array_like, optional
         The weights for each value in `u` and `v`. Default is None,
         which gives each value a weight of 1.0
 
     Returns
     -------
-    cityblock : double
+    cityblock : float or array
         The City Block (Manhattan) distance between vectors `u` and `v`.
 
     Examples
     --------
     >>> from scipy.spatial import distance
     >>> distance.cityblock([1, 0, 0], [0, 1, 0])
-    2
+    2.0
     >>> distance.cityblock([1, 0, 0], [0, 2, 0])
-    3
+    3.0
     >>> distance.cityblock([1, 0, 0], [1, 1, 0])
-    1
+    1.0
 
     """
-    u = _validate_vector(u)
-    v = _validate_vector(v)
-    l1_diff = abs(u - v)
+    u, v, w = _promote(u, v, w, xp=np)
+    l1_diff = np.abs(u - v)
     if w is not None:
         w = _validate_weights(w)
         l1_diff = w * l1_diff
-    return l1_diff.sum()
+    return l1_diff.sum(axis=-1)
 
 
 def mahalanobis(u, v, VI):

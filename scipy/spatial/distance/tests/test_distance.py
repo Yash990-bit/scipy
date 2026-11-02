@@ -2008,6 +2008,13 @@ class TestBrayCurtis:
         assert math.isclose(wbraycurtis([1, 1, 0, 0], [1, 0, 1, 0]), 0.5, abs_tol=1e-15)
 
 
+class TestCityBlock:
+    def test_cityblock(self):
+        assert wcityblock([1, 0, 0], [0, 1, 0]) == 2
+        assert wcityblock([1, 0, 0], [0, 2, 0]) == 3
+        assert wcityblock([1, 0, 0], [1, 1, 0]) == 1
+
+
 def test_canberra_int64_min():
     # Regression test for gh-26486: integer inputs at the int64 limit
     # must not overflow to a negative, asymmetric distance in canberra.
@@ -2421,6 +2428,7 @@ class TestChebyshev:
         make_xp_pytest_param(euclidean, None),
         make_xp_pytest_param(sqeuclidean, None),
         (braycurtis, None),
+        (cityblock, None),
         (yule, None),
         (dice, None),
         (rogerstanimoto, None),
